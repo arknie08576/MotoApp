@@ -10,18 +10,22 @@ namespace MotoApp.Repositories
     public class GenericRepository<T> where T : IEntity
     {
 
-        private readonly List<T> _employees = new();
+        protected readonly List<T> _items = new();
 
         public void Add(T employee)
         {
 
-            employee.Id = _employees.Count + 1;
-            _employees.Add(employee);
+            employee.Id = _items.Count + 1;
+            _items.Add(employee);
+        }
+        public void Remove(T item)
+        {
+            _items.Remove(item);
         }
 
         public void Save()
         {
-            foreach (var emp in _employees)
+            foreach (var emp in _items)
             {
                 Console.WriteLine(emp);
             }
@@ -29,7 +33,7 @@ namespace MotoApp.Repositories
         }
         public T GetById(int id)
         {
-            return _employees.Single(item=>item.Id==id);
+            return _items.Single(item=>item.Id==id);
         }
 
     }
