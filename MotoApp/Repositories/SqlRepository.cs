@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace MotoApp.Repositories
 {
-    public class SqlRepository
+    public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     {
 
-        private readonly DbSet<Employee> _dbSet;
+        private readonly DbSet<T> _dbSet;
         private readonly DbContext _dbContext;
 
         public SqlRepository(DbContext dbContex)
         {
 
             _dbContext = dbContex;
-            _dbSet = _dbContext.Set<Employee>();
+            _dbSet = _dbContext.Set<T>();
         }
 
-        public Employee GetById(int id)
+        public T GetById(int id)
         {
 
             return _dbSet.Find(id);
@@ -29,13 +29,13 @@ namespace MotoApp.Repositories
         }
 
 
-        public void Add(Employee item)
+        public void Add(T item)
         {
 
             _dbSet.Add(item);
         }
 
-        public void Remove(Employee item)
+        public void Remove(T item)
         {
 
             _dbSet.Remove(item);
@@ -47,6 +47,9 @@ namespace MotoApp.Repositories
 
 
         }
-
+        public IEnumerable<T> GetAll()
+        {
+            return _dbSet.ToList();
+        }
     }
 }

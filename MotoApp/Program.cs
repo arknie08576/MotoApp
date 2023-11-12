@@ -9,11 +9,23 @@ using MotoApp.Repositories;
 //employeeRepository.Save();
 
 
-var sqlRepository = new SqlRepository(new MotoAppDbContext());
+var sqlRepository = new SqlRepository<Employee>(new MotoAppDbContext());
 sqlRepository.Add(new Employee("Adam"));
 sqlRepository.Add(new Employee("Zuzia"));
 sqlRepository.Add(new Employee("Piotr"));
 sqlRepository.Save();
 Console.WriteLine(sqlRepository.GetById(1));
+
+
+
+
+GetEmployeeById(sqlRepository);
+static void GetEmployeeById(IRepository<IEntity> employeeRepository)
+{
+    var employee = employeeRepository.GetById(2);
+    Console.WriteLine(employee);
+
+
+}
 
 

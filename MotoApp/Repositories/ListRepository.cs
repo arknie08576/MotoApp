@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MotoApp.Repositories
 {
-    public class GenericRepository<T> where T : IEntity
+    public class ListRepository<T> : IRepository<T> where T : class, IEntity, new()
     {
 
         protected readonly List<T> _items = new();
@@ -25,10 +25,10 @@ namespace MotoApp.Repositories
 
         public void Save()
         {
-            foreach (var emp in _items)
-            {
-                Console.WriteLine(emp);
-            }
+            /* foreach (var emp in _items)
+             {
+                 Console.WriteLine(emp);
+             }*/
 
         }
         public T GetById(int id)
@@ -36,5 +36,9 @@ namespace MotoApp.Repositories
             return _items.Single(item=>item.Id==id);
         }
 
+        public IEnumerable<T> GetAll()
+        {
+            return _items.ToList();
+        }
     }
 }
