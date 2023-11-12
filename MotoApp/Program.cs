@@ -20,7 +20,7 @@ Console.WriteLine(sqlRepository.GetById(1));
 
 
 GetEmployeeById(sqlRepository);
-static void GetEmployeeById(IRepository<IEntity> employeeRepository)
+static void GetEmployeeById(IRepository<Employee> employeeRepository)
 {
     var employee = employeeRepository.GetById(2);
     Console.WriteLine(employee);
