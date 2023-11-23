@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace MotoApp.Entities
 {
-    public class BusinessPartner : IEntity
+    public class BusinessPartner : Employee, IEntity
     {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
+        //public int Id { get; set; }
+       // public string FirstName { get; set; }
         public BusinessPartner() { }
         public BusinessPartner(string name)
         {
 
             FirstName = name;
         }
-        public override string ToString() => $"Id: {Id}, FirstName: {FirstName}";
+        public override string ToString() => $"BusinessPartner Id: {Id}, FirstName: {FirstName}";
     }
 }

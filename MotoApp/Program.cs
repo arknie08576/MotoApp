@@ -12,7 +12,7 @@ using MotoApp.Repositories;
 var sqlRepository = new SqlRepository<Employee>(new MotoAppDbContext());
 sqlRepository.Add(new Employee("Adam"));
 sqlRepository.Add(new Employee("Zuzia"));
-sqlRepository.Add(new Employee("Piotr"));
+sqlRepository.Add(new BusinessPartner("Piotr"));
 sqlRepository.Save();
 Console.WriteLine(sqlRepository.GetById(1));
 
@@ -22,7 +22,7 @@ Console.WriteLine(sqlRepository.GetById(1));
 GetEmployeeById(sqlRepository);
 static void GetEmployeeById(IRepository<Employee> employeeRepository)
 {
-    var employee = employeeRepository.GetById(2);
+    var employee = employeeRepository.GetById(3);
     Console.WriteLine(employee);
 
 
