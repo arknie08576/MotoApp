@@ -8,17 +8,22 @@ using System.Threading.Tasks;
 
 namespace MotoApp.Repositories
 {
+
+    //public delegate void ItemAdded<T>(T item);
     public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     {
 
         private readonly DbSet<T> _dbSet;
         private readonly DbContext _dbContext;
-
-        public SqlRepository(DbContext dbContex)
+        private readonly Action<T>? _itemAddedCallback;
+        public event EventHandler<T>? ItemAdded;
+        public SqlRepository(DbContext dbContex, Action<T>? itemAddedCallback=null)
         {
 
             _dbContext = dbContex;
             _dbSet = _dbContext.Set<T>();
+            _itemAddedCallback = itemAddedCallback;
+            
         }
 
         public T GetById(int id)
@@ -33,6 +38,8 @@ namespace MotoApp.Repositories
         {
 
             _dbSet.Add(item);
+            _itemAddedCallback?.Invoke(item);
+            ItemAdded?.Invoke(this, item);
         }
 
         public void Remove(T item)

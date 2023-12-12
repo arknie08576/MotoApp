@@ -1,31 +1,61 @@
 ﻿using MotoApp.Data;
 using MotoApp.Entities;
 using MotoApp.Repositories;
-
-//var employeeRepository = new GenericRepository<Employee>();
-//employeeRepository.Add(new Employee("Adam"));
-//employeeRepository.Add(new Employee("Zuzia"));
-//employeeRepository.Add(new Employee("Piotr"));
-//employeeRepository.Save();
+using MotoApp.Repositories.Extensions;
 
 
-var sqlRepository = new SqlRepository<Employee>(new MotoAppDbContext());
-sqlRepository.Add(new Employee("Adam"));
-sqlRepository.Add(new Employee("Zuzia"));
-sqlRepository.Add(new BusinessPartner("Piotr"));
-sqlRepository.Save();
-Console.WriteLine(sqlRepository.GetById(1));
+var itemAdded = new Action<BusinessPartner>(EmployeeAdded);
+var employeeRepository = new SqlRepository<BusinessPartner>(new MotoAppDbContext(), itemAdded);
+employeeRepository.ItemAdded += EmployeRepositoryEmployeeAdded;
 
-
-
-
-GetEmployeeById(sqlRepository);
-static void GetEmployeeById(IRepository<Employee> employeeRepository)
+void EmployeRepositoryEmployeeAdded(object? sender, BusinessPartner e)
 {
-    var employee = employeeRepository.GetById(3);
-    Console.WriteLine(employee);
+    Console.WriteLine($"Employee added => {e.FirstName} from {sender?.GetType().Name}");
+}
+
+AddEmployees(employeeRepository);
+WriteAllToConsole(employeeRepository);
+
+static void AddEmployees(IRepository<BusinessPartner> employeeRepository)
+{
+    var businessPartners = new[] {
+        (new BusinessPartner("Piotr")),
+        (new BusinessPartner("Adam")),
+        (new BusinessPartner("Zuzia"))
+};
+
+    employeeRepository.AddBatch(businessPartners);
+
 
 
 }
+static void EmployeeAdded(BusinessPartner item)
+{
+    
+    Console.WriteLine(item.FirstName+ " added");
+}
+
+//static void AddBatch<T>(IRepository<T> employeeRepository, T[] items) where T : class, IEntity
+//{
+//    foreach (var item in items)
+//    {
+//        employeeRepository.Add(item);
+
+//    }
+//    employeeRepository.Save();
+//}
+
+static void WriteAllToConsole(IRepository<BusinessPartner> employeeRepository)
+{
+    var items=employeeRepository.GetAll();
+    foreach(var item in items)
+    {
+        Console.WriteLine(item);
+    }
+}
+
+
+
+
 
 
